@@ -1,0 +1,9 @@
+**/Dependencies
+**/Properties
+**/Migrations
+**/obj
+**/bin
+
+*.sln
+*.sqlite
+*.db*
