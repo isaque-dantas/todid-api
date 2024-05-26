@@ -1,0 +1,92 @@
+using Microsoft.EntityFrameworkCore;
+using TodoList = TodoAPI.Models.TodoList;
+using TodoItem = TodoAPI.Models.TodoItem;
+
+
+namespace TodoAPI.Services;
+
+public class TodoListService(TodoContext context) : ITodoService
+{
+    public bool EntryExists(int id)
+    {
+        var todoList = context.TodoLists.Find(id);
+        return todoList is not null;
+    }
+
+    public IEnumerable<TodoList> GetAll()
+    {
+        return context.TodoLists
+            .AsNoTracking()
+            .ToList();
+    }
+
+    public TodoList GetById(int id)
+    {
+        return context.TodoLists.Find(id)!;
+    }
+
+    public List<TodoItem> GetItems(int id)
+    {
+        var items =
+            context.TodoItems.Where(item => item.TodoListId == id).ToList();
+        return items;
+    }
+
+    public TodoList Create(TodoList newTodoList)
+    {
+        context.TodoLists.Add(newTodoList);
+        context.SaveChanges();
+
+        return newTodoList;
+    }
+
+    public void Update(int id, TodoList inputTodoList)
+    {
+        var todoList = GetById(id);
+        todoList.Name = inputTodoList.Name;
+        todoList.Color = inputTodoList.Color;
+
+        Console.WriteLine();
+        Console.WriteLine(inputTodoList.TodoItems);
+        Console.WriteLine(inputTodoList.TodoItems!.Count);
+        Console.WriteLine();
+
+        if (inputTodoList.TodoItems!.Count > 0)
+        {
+            context.RemoveRange(GetItems(todoList.Id));
+
+            foreach (var todoItemDto in inputTodoList.TodoItems)
+            {
+                var todoItem = new TodoItem
+                {
+                    Name = todoItemDto.Name,
+                    IsComplete = todoItemDto.IsComplete,
+                    TodoListId = todoItemDto.TodoListId,
+                    TodoList = todoList
+                };
+
+                context.TodoItems.Add(todoItem);
+            }
+        }
+
+        context.SaveChanges();
+    }
+
+    public void DeleteById(int id)
+    {
+        context.TodoLists.Remove(GetById(id));
+        context.SaveChanges();
+    }
+    
+    public void DeleteItemsById(int id)
+    {
+        context.TodoItems.RemoveRange(GetItems(id));
+        context.SaveChanges();
+    }
+    
+    public void DeleteAll()
+    {
+        context.TodoLists.RemoveRange(context.TodoLists);
+        context.SaveChanges();
+    }
+}

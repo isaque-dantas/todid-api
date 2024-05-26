@@ -1,0 +1,70 @@
+@TodoAPI_HostAddress = http://localhost:5241
+
+GET {{TodoAPI_HostAddress}}/items
+
+###
+GET {{TodoAPI_HostAddress}}/items/23
+
+###
+POST {{TodoAPI_HostAddress}}/items
+Content-Type: application/json
+
+{
+  "Name": "dormir",
+  "IsComplete": false,
+  "TodoListId": 12
+}
+
+###
+PUT {{TodoAPI_HostAddress}}/items/33
+Content-Type: application/json
+
+{
+  "Name": "batata",
+  "IsComplete": true,
+  "TodoListId": 12
+}
+
+###
+GET {{TodoAPI_HostAddress}}/lists
+
+###
+GET {{TodoAPI_HostAddress}}/lists/12
+
+###
+GET {{TodoAPI_HostAddress}}/lists/12/items
+
+###
+POST {{TodoAPI_HostAddress}}/lists
+Content-Type: application/json
+
+{
+  "Name": "list 1",
+  "Color": "000000",
+  "TodoItems": []
+}
+
+###
+DELETE {{TodoAPI_HostAddress}}/items
+
+###
+DELETE {{TodoAPI_HostAddress}}/items/1029
+
+###
+PUT {{TodoAPI_HostAddress}}/lists/12
+Content-Type: application/json
+
+{
+  "Name": "list 20h41",
+  "Color": "103421",
+  "TodoItems": []
+}
+
+###
+DELETE {{TodoAPI_HostAddress}}/lists
+
+###
+DELETE {{TodoAPI_HostAddress}}/lists/12/items
+
+###
+DELETE {{TodoAPI_HostAddress}}/lists/3
