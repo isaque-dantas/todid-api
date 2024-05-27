@@ -1,11 +1,11 @@
+using System.Security.Claims;
 using FluentValidation.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TodoAPI.EndpointFilters;
 using TodoAPI.Models;
-using TodoAPI.Requests;
 using TodoAPI.Services;
 
-namespace TodoAPI;
+namespace TodoAPI.Endpoints;
 
 public static class TodoItemEndpoints
 {
@@ -39,8 +39,9 @@ public static class TodoItemEndpoints
         return Results.Ok(service.GetById(id));
     }
 
-    private static IResult GetAll([FromServices] TodoItemService service)
+    private static IResult GetAll(HttpContext context, [FromServices] TodoItemService service)
     {
+        Console.WriteLine(context.User.FindFirst(ClaimTypes.Sid)?.Value);
         return Results.Ok(service.GetAll());
     }
 

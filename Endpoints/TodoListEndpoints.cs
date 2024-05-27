@@ -5,7 +5,7 @@ using TodoAPI.Models;
 using TodoAPI.Requests;
 using TodoAPI.Services;
 
-namespace TodoAPI;
+namespace TodoAPI.Endpoints;
 
 public static class TodoListEndpoints
 {
