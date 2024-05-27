@@ -1,6 +1,5 @@
 using TodoAPI;
 using TodoAPI.Services;
-
 using FluentValidation;
 using TodoAPI.Models;
 using TodoAPI.Requests;
@@ -16,7 +15,13 @@ builder.Services.AddScoped<IValidator<TodoItemDto>, TodoItemDto.Validator>();
 builder.Services.AddScoped<TodoItemService>();
 builder.Services.AddScoped<TodoListService>();
 
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("admin_greetings", policy => policy.RequireRole("admin"));
+
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 TodoItemEndpoints.Map(app);
 TodoListEndpoints.Map(app);

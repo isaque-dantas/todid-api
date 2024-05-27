@@ -13,10 +13,11 @@ public static class TodoItemEndpoints
     {
         var items = app
             .MapGroup("/items")
-            .AddEndpointFilter<RouteIdValidator<TodoItem>>()
+            .AddEndpointFilter<RouteIdExistsValidator<TodoItem>>()
             .AddEndpointFilter<FluentValidationEndpointFilter>();
 
-        items.MapGet("", GetAll);
+        items.MapGet("", GetAll)
+            .RequireAuthorization("admin_greetings");
 
         items.MapPost("", Create)
             .AddEndpointFilter<TodoItemForeignKeyValidator>();

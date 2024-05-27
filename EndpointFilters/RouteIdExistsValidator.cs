@@ -2,7 +2,7 @@ using TodoAPI.Services;
 
 namespace TodoAPI.EndpointFilters;
 
-public class RouteIdValidator<T> : IEndpointFilter
+public class RouteIdExistsValidator<T> : IEndpointFilter
 {
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {

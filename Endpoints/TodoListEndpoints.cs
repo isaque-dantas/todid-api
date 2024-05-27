@@ -13,7 +13,7 @@ public static class TodoListEndpoints
     {
         var lists = app
             .MapGroup("/lists")
-            .AddEndpointFilter<RouteIdValidator<TodoList>>()
+            .AddEndpointFilter<RouteIdExistsValidator<TodoList>>()
             .AddEndpointFilter<FluentValidationEndpointFilter>();
 
         lists.MapGet("/{id:int}", GetById);

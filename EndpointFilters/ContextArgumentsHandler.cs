@@ -8,9 +8,9 @@ public static class ContextArgumentsHandler
     {
         foreach (var contextArgument in context.Arguments)
         {
-            if (serviceType is null)
+            if (contextArgument is ITodoService service && serviceType is null)
             {
-                return (ITodoService)contextArgument!;
+                return service;
             }
             
             if (contextArgument!.GetType() == serviceType)

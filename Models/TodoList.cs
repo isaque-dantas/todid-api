@@ -8,6 +8,10 @@ public class TodoList
     public string Name { get; set; }
     public string Color { get; set; }
     
+    public int UserId { get; set; }
+    
+    public User User { get; set; }
+    
     [JsonIgnore]
-    public List<TodoItem>? TodoItems { get; set; } = new List<TodoItem>();
+    public List<TodoItem>? TodoItems { get; set; }
 }
