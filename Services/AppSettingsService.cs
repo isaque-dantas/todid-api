@@ -8,7 +8,7 @@ public static class AppSettingsService
     static AppSettingsService()
     {
         var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetParent(".")!.ToString())
+            .SetBasePath("/home/isaque/RiderProjects/TodoAPI/TodoAPI/")
             .AddJsonFile("appsettings.json")
             .Build();
 

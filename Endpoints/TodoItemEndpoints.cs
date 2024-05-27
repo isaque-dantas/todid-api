@@ -16,8 +16,7 @@ public static class TodoItemEndpoints
             .AddEndpointFilter<RouteIdExistsValidator<TodoItem>>()
             .AddEndpointFilter<FluentValidationEndpointFilter>();
 
-        items.MapGet("", GetAll)
-            .RequireAuthorization("admin_greetings");
+        items.MapGet("", GetAll);
 
         items.MapPost("", Create)
             .AddEndpointFilter<TodoItemForeignKeyValidator>();

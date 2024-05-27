@@ -73,3 +73,30 @@ DELETE {{TodoAPI_HostAddress}}/lists/12/items
 
 ###
 DELETE {{TodoAPI_HostAddress}}/lists/3
+
+
+
+###
+POST {{TodoAPI_HostAddress}}/users/login
+Content-Type: application/json
+
+{
+  "Email": "isaque@gmail.com",
+  "Password": "12345"
+}
+
+###
+POST {{TodoAPI_HostAddress}}/users
+Content-Type: application/json
+
+{
+  "Name": "Isaque",
+  "Username": "isaque-d",
+  "Email": "itas@gmail.com",
+  "Password": "12345678",
+  "Role": "admin"
+}
+
+###
+GET {{TodoAPI_HostAddress}}/users/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IklzYXF1ZSIsImVtYWlsIjoiaXNhcXVlQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTcxNjgzMjU1NiwiZXhwIjoxNzE2ODM5NzU2LCJpYXQiOjE3MTY4MzI1NTZ9.9bqtpoANOlBKHD9MOYA0vmCCuuLB3immJDZNwmB_lQ8

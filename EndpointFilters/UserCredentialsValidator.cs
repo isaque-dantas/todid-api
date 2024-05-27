@@ -23,6 +23,9 @@ public class UserCredentialsValidator : IEndpointFilter
         if (request is null)
             return Results.Problem("User login data not found.");
 
+        if (service.GetByEmail(request.Email) is null)
+            return Results.NotFound($"There isn't any user with email '{request.Email}'");
+        
         if (!service.AreEmailAndPasswordValid(request.Email, request.Password))
             return Results.Unauthorized();
         

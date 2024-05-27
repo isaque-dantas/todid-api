@@ -2,6 +2,6 @@ namespace TodoAPI.Requests;
 
 public class UserLoginRequest
 {
-    public string Email;
-    public string Password;
+    public string Email { get; set; }
+    public string Password { get; set; }
 }
