@@ -34,10 +34,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+
 builder.Services.AddAuthorization();
 
-// builder.Services.AddAuthorizationBuilder()
-//     .AddPolicy("admin_greetings", policy => policy.RequireRole("admin"));
 
 var app = builder.Build();
 

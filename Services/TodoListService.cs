@@ -13,7 +13,7 @@ public class TodoListService(TodoContext context) : ITodoService
         return todoList is not null;
     }
 
-    public IEnumerable<TodoList> GetAll()
+    public IEnumerable<TodoList> GetAll(int userId)
     {
         return context.TodoLists
             .AsNoTracking()

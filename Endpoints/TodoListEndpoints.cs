@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using FluentValidation.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TodoAPI.EndpointFilters;
@@ -20,7 +21,8 @@ public static class TodoListEndpoints
 
         lists.MapGet("/{id:int}/items", GetItemsFromList);
 
-        lists.MapGet("", GetAll);
+        lists.MapGet("", GetAll)
+            .RequireAuthorization();
 
         lists.MapPost("", Create);
 
@@ -29,7 +31,7 @@ public static class TodoListEndpoints
         lists.MapDelete("/{id:int}", DeleteById);
 
         lists.MapDelete("/{id:int}/items", DeleteItemsById);
-        
+
         lists.MapDelete("", DeleteAll);
     }
 
@@ -38,9 +40,19 @@ public static class TodoListEndpoints
         return Results.Ok(service.GetById(id));
     }
 
-    private static IResult GetAll([FromServices] TodoListService service)
+    private static IResult GetAll([FromServices] TodoListService todoListService,
+        [FromServices] UserService userService, ClaimsPrincipal claimsUser)
     {
-        return Results.Ok(service.GetAll());
+        var userEmail = claimsUser.FindFirst(ClaimTypes.Email)?.Value;
+        if (userEmail is null)
+            return Results.NotFound("User was not found!");
+        
+        var user = userService.GetByEmail(userEmail);
+
+        if (user is null)
+            return Results.NotFound("User was not found!");
+        
+        return Results.Ok(todoListService.GetAll(user.Id));
     }
 
     private static IResult GetItemsFromList([FromServices] TodoListService service, int id)
@@ -54,7 +66,8 @@ public static class TodoListEndpoints
         return Results.Created($"/lists/{todoList.Id}", todoList);
     }
 
-    private static IResult Update([FromServices] TodoListService service, [FromBody] UpdateTodoListRequest todoListRequest,
+    private static IResult Update([FromServices] TodoListService service,
+        [FromBody] UpdateTodoListRequest todoListRequest,
         int id)
     {
         service.Update(id, todoListRequest.ToTodoList());

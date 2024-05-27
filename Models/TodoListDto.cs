@@ -7,7 +7,9 @@ public class TodoListDto
     public string? Name { get; set; }
     public string? Color { get; set; }
     public List<TodoItemDto>? TodoItems { get; set; }
-
+    public int UserId { get; set; }
+    public User User { get; set; }
+    
     public TodoList ToTodoList()
     {
         var todoItems = new List<TodoItem>();
@@ -15,9 +17,11 @@ public class TodoListDto
 
         return new TodoList
         {
-            Name = Name,
-            Color = Color,
+            Name = Name!,
+            Color = Color!,
             TodoItems = todoItems,
+            UserId = UserId,
+            User = User
         };
     }
 

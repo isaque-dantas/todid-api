@@ -81,8 +81,8 @@ POST {{TodoAPI_HostAddress}}/users/login
 Content-Type: application/json
 
 {
-  "Email": "isaque@gmail.com",
-  "Password": "12345"
+  "Email": "isaque.dantas@gmail.com",
+  "Password": "12345678"
 }
 
 ###
@@ -99,4 +99,8 @@ Content-Type: application/json
 
 ###
 GET {{TodoAPI_HostAddress}}/users/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IklzYXF1ZSIsImVtYWlsIjoiaXNhcXVlQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTcxNjgzMjU1NiwiZXhwIjoxNzE2ODM5NzU2LCJpYXQiOjE3MTY4MzI1NTZ9.9bqtpoANOlBKHD9MOYA0vmCCuuLB3immJDZNwmB_lQ8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IklzYXF1ZSBWaWN0b3IgZG8gTmFzY2ltZW50byBEYW50YXMiLCJlbWFpbCI6ImlzYXF1ZS5kYW50YXNAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwibmJmIjoxNzE2ODM4NzgwLCJleHAiOjE3MTY4NDU5ODAsImlhdCI6MTcxNjgzODc4MH0.gevrlLFL9LQTGOClDXY2iSb6jJOUwRnMpNwv7bZbJVU
+
+###
+GET {{TodoAPI_HostAddress}}/users/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IklzYXF1ZSIsImVtYWlsIjoiaXRhc0BnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJuYmYiOjE3MTY4Mzg2ODYsImV4cCI6MTcxNjg0NTg4NiwiaWF0IjoxNzE2ODM4Njg2fQ.AmU-KCaRUG_GUW_sXi3anOy9X6OfsYNG0FIGXgzOxtg

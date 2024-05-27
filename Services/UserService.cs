@@ -13,12 +13,14 @@ public class UserService(TodoContext context) : ITodoService
     public bool AreEmailAndPasswordValid(string email, string password)
     {
         var user = context.Users.AsNoTracking().SingleOrDefault(u => u.Email == email);
-        
+
         if (user is null)
             return false;
-        
+
         return user.Password == password;
     }
+
+// TODO: method that convert ClaimPrincipal to User
 
     public User? GetById(int id)
     {

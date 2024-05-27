@@ -17,15 +17,14 @@ public static class UserEndpoints
             .AddEndpointFilter<FluentValidationEndpointFilter>();
 
         users.MapGet("", Get)
-            .RequireAuthorization();
-        
+            .RequireAuthorization()
+            .AddEndpointFilter<UserClaimValidator>();
+
         users.MapPost("", Register)
             .AddEndpointFilter<UserUniqueAttributesValidator>();
-        
+
         users.MapPost("/login", Login)
             .AddEndpointFilter<UserCredentialsValidator>();
-        
-
     }
 
     private static IResult Login([FromBody] UserLoginRequest userLoginRequest, [FromServices] UserService service)
@@ -36,12 +35,7 @@ public static class UserEndpoints
 
     private static IResult Get([FromServices] UserService service, ClaimsPrincipal claimsUser)
     {
-        var userEmail = claimsUser.FindFirst(ClaimTypes.Email)?.Value;
-        
-        if (userEmail is null) return Results.NotFound("User was not found!");
-        
-        var user = service.GetByEmail(userEmail);
-        return user is null ? Results.NotFound("User was not found!") : Results.Ok(user);
+        return Results.Ok(user);
     }
 
     private static IResult Register([FromServices] UserService service, UserDto userDto)
