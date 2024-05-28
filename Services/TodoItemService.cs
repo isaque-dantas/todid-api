@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 using TodoList = TodoAPI.Models.TodoList;
 using TodoItem = TodoAPI.Models.TodoItem;
@@ -9,8 +8,13 @@ public class TodoItemService(TodoContext context) : ITodoService
 {
     public bool EntryExists(int id)
     {
-        var todo = context.TodoItems.Find(id);
-        return todo is not null;
+        var todoItem = context.TodoItems.Find(id);
+        return todoItem is not null;
+    }
+
+    public bool UserHasEntry(int id, int userId)
+    {
+        return context.TodoItems.Find(id)!.TodoList.UserId == userId;
     }
 
     public TodoItem GetById(int id)
@@ -18,10 +22,11 @@ public class TodoItemService(TodoContext context) : ITodoService
         return context.TodoItems.Find(id)!;
     }
 
-    public IEnumerable<TodoItem> GetAll()
+    public IEnumerable<TodoItem> GetAll(int userId)
     {
         return context.TodoItems
             .AsNoTracking()
+            .Where(item => item.TodoList.UserId == userId)
             .ToList();
     }
 
@@ -38,7 +43,7 @@ public class TodoItemService(TodoContext context) : ITodoService
     public void Update(int id, TodoItem inputTodoItem, TodoList todoList)
     {
         var todo = GetById(id);
-        
+
         todo.TodoList = todoList;
         todo.TodoListId = todoList.Id;
         todo.IsComplete = inputTodoItem.IsComplete;
@@ -55,9 +60,9 @@ public class TodoItemService(TodoContext context) : ITodoService
         context.SaveChanges();
     }
 
-    public void DeleteAll()
+    public void DeleteAll(int userId)
     {
-        context.TodoItems.RemoveRange(context.TodoItems);
+        context.TodoItems.RemoveRange(context.TodoItems.Where(item => item.TodoList.UserId == userId));
         context.SaveChanges();
     }
 

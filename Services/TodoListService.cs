@@ -13,10 +13,16 @@ public class TodoListService(TodoContext context) : ITodoService
         return todoList is not null;
     }
 
+    public bool UserHasEntry(int id, int userId)
+    {
+        return context.TodoLists.Find(id)!.UserId == userId;
+    }
+    
     public IEnumerable<TodoList> GetAll(int userId)
     {
         return context.TodoLists
             .AsNoTracking()
+            .Where(list => list.UserId == userId)
             .ToList();
     }
 
@@ -34,6 +40,7 @@ public class TodoListService(TodoContext context) : ITodoService
 
     public TodoList Create(TodoList newTodoList)
     {
+        newTodoList.User = context.Users.Find(newTodoList.UserId)!;
         context.TodoLists.Add(newTodoList);
         context.SaveChanges();
 
@@ -77,16 +84,18 @@ public class TodoListService(TodoContext context) : ITodoService
         context.TodoLists.Remove(GetById(id));
         context.SaveChanges();
     }
-    
+
     public void DeleteItemsById(int id)
     {
         context.TodoItems.RemoveRange(GetItems(id));
         context.SaveChanges();
     }
-    
-    public void DeleteAll()
+
+    public void DeleteAll(int userId)
     {
-        context.TodoLists.RemoveRange(context.TodoLists);
+        context.TodoLists.RemoveRange(
+            context.TodoLists.Where(list => list.UserId == userId)
+        );
         context.SaveChanges();
     }
 }

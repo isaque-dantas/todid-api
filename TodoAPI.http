@@ -1,14 +1,15 @@
 @TodoAPI_HostAddress = http://localhost:5241
 
 GET {{TodoAPI_HostAddress}}/items
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImlzYXF1ZSIsInN1YiI6ImlzYXF1ZSIsImp0aSI6IjYwN2E0MTMwIiwicm9sZSI6ImFkbWluIiwiSWQiOiIxIiwiYXVkIjpbImh0dHA6Ly9sb2NhbGhvc3Q6NDQ0MjUiLCJodHRwczovL2xvY2FsaG9zdDo0NDMzMyIsImh0dHA6Ly9sb2NhbGhvc3Q6NTI0MSIsImh0dHBzOi8vbG9jYWxob3N0OjcyOTkiXSwibmJmIjoxNzE2ODI0ODE3LCJleHAiOjE3MjQ3NzM2MTcsImlhdCI6MTcxNjgyNDgxOCwiaXNzIjoiZG90bmV0LXVzZXItand0cyJ9.GYyXsBVHIfDnCq2NGMkZ6GhAyxnrsdgRVjmt9VFSXdE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2Iiwicm9sZSI6ImFkbWluIiwibmJmIjoxNzE2OTA3NzAwLCJleHAiOjE3MTY5MTQ5MDAsImlhdCI6MTcxNjkwNzcwMH0.OhXKjVLmLRIvlQDJxD6tFNtWuTb7yyRBM96cMwGmeF0
 
 ###
-
 GET {{TodoAPI_HostAddress}}/items
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2Iiwicm9sZSI6ImFkbWluIiwibmJmIjoxNzE2OTA3NzAwLCJleHAiOjE3MTY5MTQ5MDAsImlhdCI6MTcxNjkwNzcwMH0.OhXKjVLmLRIvlQDJxD6tFNtWuTb7yyRBM96cMwGmeF0
 
 ###
 GET {{TodoAPI_HostAddress}}/items/23
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2Iiwicm9sZSI6ImFkbWluIiwibmJmIjoxNzE2OTA3NzAwLCJleHAiOjE3MTY5MTQ5MDAsImlhdCI6MTcxNjkwNzcwMH0.OhXKjVLmLRIvlQDJxD6tFNtWuTb7yyRBM96cMwGmeF0
 
 ###
 POST {{TodoAPI_HostAddress}}/items
@@ -32,6 +33,7 @@ Content-Type: application/json
 
 ###
 GET {{TodoAPI_HostAddress}}/lists
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2Iiwicm9sZSI6ImFkbWluIiwibmJmIjoxNzE2OTA1Mjk0LCJleHAiOjE3MTY5MTI0OTQsImlhdCI6MTcxNjkwNTI5NH0.-3mAqFc36rOcm7w86tCtrTH3TkOIn8W8E52WVEAwm18
 
 ###
 GET {{TodoAPI_HostAddress}}/lists/12
@@ -42,9 +44,10 @@ GET {{TodoAPI_HostAddress}}/lists/12/items
 ###
 POST {{TodoAPI_HostAddress}}/lists
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2Iiwicm9sZSI6ImFkbWluIiwibmJmIjoxNzE2OTA1Mjk0LCJleHAiOjE3MTY5MTI0OTQsImlhdCI6MTcxNjkwNTI5NH0.-3mAqFc36rOcm7w86tCtrTH3TkOIn8W8E52WVEAwm18
 
 {
-  "Name": "list 1",
+  "Name": "list 2",
   "Color": "000000",
   "TodoItems": []
 }
@@ -99,8 +102,8 @@ Content-Type: application/json
 
 ###
 GET {{TodoAPI_HostAddress}}/users/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IklzYXF1ZSBWaWN0b3IgZG8gTmFzY2ltZW50byBEYW50YXMiLCJlbWFpbCI6ImlzYXF1ZS5kYW50YXNAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwibmJmIjoxNzE2ODM4NzgwLCJleHAiOjE3MTY4NDU5ODAsImlhdCI6MTcxNjgzODc4MH0.gevrlLFL9LQTGOClDXY2iSb6jJOUwRnMpNwv7bZbJVU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2Iiwicm9sZSI6ImFkbWluIiwibmJmIjoxNzE2OTA1Mjk0LCJleHAiOjE3MTY5MTI0OTQsImlhdCI6MTcxNjkwNTI5NH0.-3mAqFc36rOcm7w86tCtrTH3TkOIn8W8E52WVEAwm18
 
 ###
 GET {{TodoAPI_HostAddress}}/users/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IklzYXF1ZSIsImVtYWlsIjoiaXRhc0BnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJuYmYiOjE3MTY4Mzg2ODYsImV4cCI6MTcxNjg0NTg4NiwiaWF0IjoxNzE2ODM4Njg2fQ.AmU-KCaRUG_GUW_sXi3anOy9X6OfsYNG0FIGXgzOxtg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2Iiwicm9sZSI6ImFkbWluIiwibmJmIjoxNzE2OTA1Mjk0LCJleHAiOjE3MTY5MTI0OTQsImlhdCI6MTcxNjkwNTI5NH0.-3mAqFc36rOcm7w86tCtrTH3TkOIn8W8E52WVEAwm18

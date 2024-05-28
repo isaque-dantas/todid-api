@@ -33,9 +33,9 @@ public static class UserEndpoints
         return Results.Ok(JwtBearerService.GenerateToken(user));
     }
 
-    private static IResult Get([FromServices] UserService service, ClaimsPrincipal claimsUser)
+    private static IResult Get([FromServices] UserService service, ClaimsPrincipal userClaim)
     {
-        return Results.Ok(user);
+        return Results.Ok(service.ClaimToUser(userClaim));
     }
 
     private static IResult Register([FromServices] UserService service, UserDto userDto)

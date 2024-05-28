@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using TodoAPI.Models;
 
@@ -6,6 +7,12 @@ namespace TodoAPI.Services;
 public class UserService(TodoContext context) : ITodoService
 {
     public bool EntryExists(int id)
+    {
+        var user = context.Users.Find(id);
+        return user is not null;
+    }
+    
+    public bool UserHasEntry(int id, int userId)
     {
         throw new NotImplementedException();
     }
@@ -21,6 +28,12 @@ public class UserService(TodoContext context) : ITodoService
     }
 
 // TODO: method that convert ClaimPrincipal to User
+
+    public User? ClaimToUser(ClaimsPrincipal? userClaim)
+    {
+        var userId = userClaim?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        return int.TryParse(userId, out _) ? GetById(int.Parse(userId)) : null;
+    }
 
     public User? GetById(int id)
     {
