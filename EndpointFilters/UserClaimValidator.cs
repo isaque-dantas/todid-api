@@ -20,23 +20,12 @@ public class UserClaimValidator : IEndpointFilter
             return Results.Problem(e.Message);
         }
 
-        var userClaim = GetUserClaimFromContext(context);
+        var userClaim = ContextArgumentsHandler.GetUserClaimFromContext(context);
         var user = service.ClaimToUser(userClaim);
 
         if (user is null)
             return Results.NotFound("User with given Id was not found.");
         
         return await next(context);
-    }
-
-    private static ClaimsPrincipal? GetUserClaimFromContext(EndpointFilterInvocationContext context)
-    {
-        foreach (var argument in context.Arguments)
-        {
-            if (argument is ClaimsPrincipal userClaim)
-                return userClaim;
-        }
-
-        return null;
     }
 }

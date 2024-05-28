@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using TodoAPI.Services;
 
 namespace TodoAPI.EndpointFilters;
@@ -19,7 +20,7 @@ public static class ContextArgumentsHandler
             }
         }
 
-        throw new Exception("Context didn't provide service argument.");
+        throw new Exception($"Context didn't provide service '{(serviceType ?? typeof(ITodoService)).FullName}' argument.");
     }
     
     public static int GetInt(EndpointFilterInvocationContext context)
@@ -31,5 +32,16 @@ public static class ContextArgumentsHandler
         }
 
         return -1;
+    }
+    
+    public static ClaimsPrincipal? GetUserClaimFromContext(EndpointFilterInvocationContext context)
+    {
+        foreach (var argument in context.Arguments)
+        {
+            if (argument is ClaimsPrincipal userClaim)
+                return userClaim;
+        }
+
+        return null;
     }
 }
