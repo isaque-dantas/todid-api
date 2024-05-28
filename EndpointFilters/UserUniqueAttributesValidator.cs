@@ -29,9 +29,11 @@ public class UserUniqueAttributesValidator : IEndpointFilter
             new() { Name = "Email", ServiceSearcherMethod = service.GetByEmail!, Value = userDto.Email },
             new() { Name = "Username", ServiceSearcherMethod = service.GetByUsername!, Value = userDto.Username }
         };
+
+        var userClaim = ContextArgumentsHandler.GetUserClaimFromContext(context);
+        var loggedUser = service.ClaimToUser(userClaim);
         
-        var validationProblems = 
-            GetValidationProblems(uniqueAttributes, service, userDto);
+        var validationProblems = GetValidationProblems(uniqueAttributes, loggedUser);
         
         if (!validationProblems.IsNullOrEmpty())
             return Results.ValidationProblem(validationProblems, statusCode: 400);
@@ -50,12 +52,14 @@ public class UserUniqueAttributesValidator : IEndpointFilter
         return null;
     }
 
-    private static Dictionary<string, string[]> GetValidationProblems(List<UniqueAttribute<string>> uniqueAttributes, UserService service, UserDto userDto)
+    private static Dictionary<string, string[]> GetValidationProblems(List<UniqueAttribute<string>> uniqueAttributes, User? loggedUser)
     {
         var validationProblems = new Dictionary<string, string[]>();
+        
         foreach (var attribute in uniqueAttributes)
         {
-            if (attribute.ServiceSearcherMethod(attribute.Value) is not null)
+            var searchedUser = attribute.ServiceSearcherMethod(attribute.Value);
+            if (searchedUser is not null && searchedUser.Id != loggedUser?.Id)
             {
                 validationProblems.Add(
                     attribute.Name, [$"'{attribute.Name}' was already registered with value '{attribute.Value}'"]

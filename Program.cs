@@ -4,6 +4,7 @@ using TodoAPI.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using TodoAPI.Authentication;
 using TodoAPI.Models;
 using TodoAPI.Requests;
 using TodoAPI.Endpoints;

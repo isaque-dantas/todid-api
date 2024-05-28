@@ -14,7 +14,6 @@ public static class TodoItemEndpoints
         var items = app
             .MapGroup("/items")
             .RequireAuthorization()
-            .AddEndpointFilter<UserHasRequestedEntryValidator>()
             .AddEndpointFilter<RouteIdExistsValidator<TodoItem>>()
             .AddEndpointFilter<FluentValidationEndpointFilter>();
 
@@ -23,14 +22,18 @@ public static class TodoItemEndpoints
         items.MapPost("", Create)
             .AddEndpointFilter<TodoItemForeignKeyValidator>();
 
-        items.MapGet("/{id:int}", GetById);
+        items.MapGet("/{id:int}", GetById)
+            .AddEndpointFilter<UserHasRequestedEntryValidator>();
 
         items.MapPut("/{id:int}", Update)
-            .AddEndpointFilter<TodoItemForeignKeyValidator>();
+            .AddEndpointFilter<TodoItemForeignKeyValidator>()
+            .AddEndpointFilter<UserHasRequestedEntryValidator>();
 
-        items.MapPatch("/{id:int}", ToggleIsComplete);
+        items.MapPatch("/{id:int}", ToggleIsComplete)
+            .AddEndpointFilter<UserHasRequestedEntryValidator>();
 
-        items.MapDelete("/{id:int}", DeleteById);
+        items.MapDelete("/{id:int}", DeleteById)
+            .AddEndpointFilter<UserHasRequestedEntryValidator>();
 
         items.MapDelete("", DeleteAll);
     }

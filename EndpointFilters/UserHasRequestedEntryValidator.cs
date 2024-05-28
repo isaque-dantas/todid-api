@@ -36,9 +36,7 @@ public class UserHasRequestedEntryValidator : IEndpointFilter
         var entryId = ContextArgumentsHandler.GetInt(context);
 
         if (!entryService.UserHasEntry(entryId, user.Id))
-            return Results.NotFound(
-                $"{entryServiceType.FullName} didn't localize entry with id '{entryId}' that belongs to user '{user.Username}'."
-            );
+            return Results.Forbid();
 
         return await next(context);
     }

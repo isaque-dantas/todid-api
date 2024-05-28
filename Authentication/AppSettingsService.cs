@@ -1,5 +1,4 @@
-namespace TodoAPI.Services;
-using Models;
+namespace TodoAPI.Authentication;
 
 public static class AppSettingsService
 {

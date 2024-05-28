@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using FluentValidation.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TodoAPI.Authentication;
 using TodoAPI.EndpointFilters;
 using TodoAPI.Models;
 using TodoAPI.Requests;
@@ -25,6 +26,11 @@ public static class UserEndpoints
 
         users.MapPost("/login", Login)
             .AddEndpointFilter<UserCredentialsValidator>();
+        
+        users.MapPut("", Update)
+            .RequireAuthorization()
+            .AddEndpointFilter<UserClaimValidator>()
+            .AddEndpointFilter<UserUniqueAttributesValidator>();
     }
 
     private static IResult Login([FromBody] UserLoginRequest userLoginRequest, [FromServices] UserService service)
@@ -42,5 +48,13 @@ public static class UserEndpoints
     {
         var registeredUser = service.Register(userDto.ToUser());
         return Results.Created($"/{registeredUser.Id}", registeredUser);
+    }
+
+    private static IResult Update([FromServices] UserService service, ClaimsPrincipal userClaim, UserDto userDto)
+    {
+        var user = service.ClaimToUser(userClaim)!;
+        service.Update(userDto.ToUser(), user.Id);
+
+        return Results.NoContent();
     }
 }

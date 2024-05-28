@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using TodoAPI.Models;
 
-namespace TodoAPI.Services;
+namespace TodoAPI.Authentication;
 
 public static class JwtBearerService
 {

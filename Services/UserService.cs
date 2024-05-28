@@ -27,8 +27,6 @@ public class UserService(TodoContext context) : ITodoService
         return user.Password == password;
     }
 
-// TODO: method that convert ClaimPrincipal to User
-
     public User? ClaimToUser(ClaimsPrincipal? userClaim)
     {
         var userId = userClaim?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -59,5 +57,16 @@ public class UserService(TodoContext context) : ITodoService
         context.SaveChanges();
 
         return user;
+    }
+
+    public void Update(User updatedUser, int userId)
+    {
+        var user = context.Users.Find(userId)!;
+        user.Name = updatedUser.Name;
+        user.Username = updatedUser.Username;
+        user.Email = updatedUser.Email;
+        user.TodoLists = updatedUser.TodoLists;
+
+        context.SaveChanges();
     }
 }

@@ -7,11 +7,13 @@ public class TodoItemForeignKeyValidator : IEndpointFilter
 {
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
-        ITodoService service;
+        UserService userService;
+        TodoListService todoListService;
 
         try
         {
-            service = ContextArgumentsHandler.GetService(context, typeof(TodoListService));
+            userService = (UserService)ContextArgumentsHandler.GetService(context, typeof(UserService));
+            todoListService = (TodoListService)ContextArgumentsHandler.GetService(context, typeof(TodoListService));
         }
         catch (Exception e)
         {
@@ -19,11 +21,17 @@ public class TodoItemForeignKeyValidator : IEndpointFilter
         }
 
         var todoItemDto = GetTodoItemDtoFromContext(context);
-        
+
         if (todoItemDto is null) return await next(context);
-        
-        if (!service.EntryExists(todoItemDto.TodoListId))
+
+        if (!todoListService.EntryExists(todoItemDto.TodoListId))
             return Results.NotFound($"There isn't a TodoList with id '{todoItemDto.TodoListId}'");
+
+        var userClaim = ContextArgumentsHandler.GetUserClaimFromContext(context);
+        var user = userService.ClaimToUser(userClaim)!;
+        
+        if (!todoListService.UserHasEntry(todoItemDto.TodoListId, user.Id))
+            return Results.Forbid();
 
         return await next(context);
     }

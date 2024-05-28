@@ -1,4 +1,4 @@
-namespace TodoAPI.Models;
+namespace TodoAPI.Authentication;
 
 public class JwtSettings
 {
