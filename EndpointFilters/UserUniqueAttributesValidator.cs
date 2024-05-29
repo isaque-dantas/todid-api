@@ -1,4 +1,5 @@
 using System.Net;
+using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using TodoAPI.Models;
 using TodoAPI.Services;
@@ -9,47 +10,31 @@ public class UserUniqueAttributesValidator : IEndpointFilter
 {
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
-        UserService service;
+        UserService? service;
 
         try
         {
-            service = (UserService)ContextArgumentsHandler.GetService(context, typeof(UserService));
+            service = ContextArgumentsHandler.GetArgument<UserService>(context);
         }
         catch (Exception e)
         {
             return Results.Problem(e.Message);
         }
 
-        var userDto = GetUserDtoFromContext(context);
+        var userDto = ContextArgumentsHandler.GetArgument<UserDto>(context);
         if (userDto is null)
             return Results.Problem("User was not found in the request.");
 
-        var uniqueAttributes = new List<UniqueAttribute<string>>
-        {
-            new() { Name = "Email", ServiceSearcherMethod = service.GetByEmail!, Value = userDto.Email },
-            new() { Name = "Username", ServiceSearcherMethod = service.GetByUsername!, Value = userDto.Username }
-        };
-
-        var userClaim = ContextArgumentsHandler.GetUserClaimFromContext(context);
-        var loggedUser = service.ClaimToUser(userClaim);
+        var userClaim = ContextArgumentsHandler.GetArgument<ClaimsPrincipal>(context);
+        var loggedUser = service!.ClaimToUser(userClaim);
         
-        var validationProblems = GetValidationProblems(uniqueAttributes, loggedUser);
+        var validationProblems = 
+            GetValidationProblems(UserDto.GetUniqueAttributes(service, userDto), loggedUser);
         
         if (!validationProblems.IsNullOrEmpty())
             return Results.ValidationProblem(validationProblems, statusCode: 400);
 
         return await next(context);
-    }
-
-    private static UserDto? GetUserDtoFromContext(EndpointFilterInvocationContext context)
-    {
-        foreach (var contextArgument in context.Arguments)
-        {
-            if (contextArgument is UserDto dto)
-                return dto;
-        }
-
-        return null;
     }
 
     private static Dictionary<string, string[]> GetValidationProblems(List<UniqueAttribute<string>> uniqueAttributes, User? loggedUser)

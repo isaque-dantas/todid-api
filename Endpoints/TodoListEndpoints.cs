@@ -36,26 +36,26 @@ public static class TodoListEndpoints
         lists.MapDelete("", DeleteAll);
     }
 
-    private static IResult GetById([FromServices] TodoListService todoListService, int id,
+    public static IResult GetById([FromServices] TodoListService todoListService, int id,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
         return Results.Ok(todoListService.GetById(id));
     }
 
-    private static IResult GetAll([FromServices] TodoListService todoListService,
+    public static IResult GetAll([FromServices] TodoListService todoListService,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
         var user = userService.ClaimToUser(userClaim)!;
         return Results.Ok(todoListService.GetAll(user.Id));
     }
 
-    private static IResult GetItemsFromList([FromServices] TodoListService todoListService, int id,
+    public static IResult GetItemsFromList([FromServices] TodoListService todoListService, int id,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
         return Results.Ok(todoListService.GetItems(id));
     }
 
-    private static IResult Create([FromServices] TodoListService todoListService,
+    public static IResult Create([FromServices] TodoListService todoListService,
         [FromServices] UserService userService, [FromBody] TodoListDto todoListDto, ClaimsPrincipal userClaim)
     {
         var user = userService.ClaimToUser(userClaim)!;
@@ -65,7 +65,7 @@ public static class TodoListEndpoints
         return Results.Created($"/lists/{todoList.Id}", todoList);
     }
 
-    private static IResult Update([FromServices] TodoListService todoListService,
+    public static IResult Update([FromServices] TodoListService todoListService,
         [FromBody] UpdateTodoListRequest todoListRequest, int id,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
@@ -76,21 +76,21 @@ public static class TodoListEndpoints
         return Results.NoContent();
     }
 
-    private static IResult DeleteById([FromServices] TodoListService todoListService, int id,
+    public static IResult DeleteById([FromServices] TodoListService todoListService, int id,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
         todoListService.DeleteById(id);
         return Results.NoContent();
     }
 
-    private static IResult DeleteItemsById([FromServices] TodoListService todoListService, int id,
+    public static IResult DeleteItemsById([FromServices] TodoListService todoListService, int id,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
         todoListService.DeleteItemsById(id);
         return Results.NoContent();
     }
 
-    private static IResult DeleteAll([FromServices] TodoListService todoListService,
+    public static IResult DeleteAll([FromServices] TodoListService todoListService,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
         var user = userService.ClaimToUser(userClaim)!;

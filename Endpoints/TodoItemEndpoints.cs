@@ -38,20 +38,20 @@ public static class TodoItemEndpoints
         items.MapDelete("", DeleteAll);
     }
 
-    private static IResult GetById([FromServices] TodoItemService todoItemService, int id,
+    public static IResult GetById([FromServices] TodoItemService todoItemService, int id,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
         return Results.Ok(todoItemService.GetById(id));
     }
 
-    private static IResult GetAll(HttpContext context, [FromServices] TodoItemService todoItemService,
+    public static IResult GetAll(HttpContext context, [FromServices] TodoItemService todoItemService,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
         var user = userService.ClaimToUser(userClaim)!;
         return Results.Ok(todoItemService.GetAll(user.Id));
     }
 
-    private static IResult Create([FromServices] TodoItemService todoItemService,
+    public static IResult Create([FromServices] TodoItemService todoItemService,
         [FromServices] TodoListService todoListService, [FromBody] TodoItemDto todoItemRequest,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
@@ -61,7 +61,7 @@ public static class TodoItemEndpoints
         return Results.Created($"/items/{todoItem.Id}", todoItem);
     }
 
-    private static IResult Update([FromServices] TodoItemService todoItemService,
+    public static IResult Update([FromServices] TodoItemService todoItemService,
         [FromServices] TodoListService todoListService, [FromBody] TodoItemDto todoItemDto, int id,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
@@ -71,21 +71,21 @@ public static class TodoItemEndpoints
         return Results.NoContent();
     }
 
-    private static IResult ToggleIsComplete([FromServices] TodoItemService todoItemService, int id,
+    public static IResult ToggleIsComplete([FromServices] TodoItemService todoItemService, int id,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
         todoItemService.ToggleIsComplete(id);
         return Results.NoContent();
     }
 
-    private static IResult DeleteById([FromServices] TodoItemService todoItemService, int id,
+    public static IResult DeleteById([FromServices] TodoItemService todoItemService, int id,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
         todoItemService.Delete(id);
         return Results.NoContent();
     }
 
-    private static IResult DeleteAll([FromServices] TodoItemService todoItemService,
+    public static IResult DeleteAll([FromServices] TodoItemService todoItemService,
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
         var user = userService.ClaimToUser(userClaim)!;

@@ -1,4 +1,5 @@
 using FluentValidation;
+using TodoAPI.Services;
 
 namespace TodoAPI.Models;
 
@@ -13,6 +14,25 @@ public class UserDto
     public string Password { get; set; }
 
     public string Role { get; set; }
+
+    public static List<UniqueAttribute<string>> GetUniqueAttributes(UserService service, UserDto userDto)
+    {
+        return
+        [
+            new UniqueAttribute<string>
+            (
+                name: "Email", serviceSearcherMethod:
+                service.GetByEmail!,
+                value: userDto.Email
+            ),
+            new UniqueAttribute<string>
+            (
+                name: "Username",
+                serviceSearcherMethod: service.GetByUsername!,
+                value: userDto.Username
+            )
+        ];
+    }
 
     public User ToUser()
     {

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using TodoAPI.Services;
 
 namespace TodoAPI.EndpointFilters;
@@ -6,36 +7,27 @@ public class UserHasRequestedEntryValidator : IEndpointFilter
 {
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
-        var requestPathToServiceType = new Dictionary<string, Type>
-        {
-            { "items", typeof(TodoItemService) },
-            { "lists", typeof(TodoListService) },
-        };
-
-        var requestPath = (string)context.HttpContext.Request.Path;
-        var entryServiceType = requestPathToServiceType[requestPath.Split("/")[1]];
-
-        UserService userService;
-        ITodoService entryService;
+        UserService? userService;
 
         try
         {
-            userService = (UserService)ContextArgumentsHandler.GetService(context, typeof(UserService));
-            entryService = ContextArgumentsHandler.GetService(context, entryServiceType);
+            userService = ContextArgumentsHandler.GetArgument<UserService>(context);
         }
         catch (Exception e)
         {
             return Results.Problem(e.Message);
         }
 
-        var userClaim = ContextArgumentsHandler.GetUserClaimFromContext(context);
+        var userClaim = ContextArgumentsHandler.GetArgument<ClaimsPrincipal>(context);
         if (userClaim is null)
             return Results.Problem("Context didn't provide user information.");
 
-        var user = userService.ClaimToUser(userClaim)!;
-        var entryId = ContextArgumentsHandler.GetInt(context);
+        var user = userService!.ClaimToUser(userClaim)!;
+        var entryId = ContextArgumentsHandler.GetArgument<int>(context);
 
-        if (!entryService.UserHasEntry(entryId, user.Id))
+        var entryType = ContextArgumentsHandler.GetRequestedEntryType(context);
+        
+        if (!userService.UserHasEntry(user.Id, entryId, entryType))
             return Results.Forbid();
 
         return await next(context);

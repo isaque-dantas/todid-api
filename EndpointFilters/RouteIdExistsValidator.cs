@@ -6,24 +6,23 @@ public class RouteIdExistsValidator<T> : IEndpointFilter
 {
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
-        var entryId = ContextArgumentsHandler.GetInt(context);
-        if (entryId == -1) return await next.Invoke(context);
+        var entryId = ContextArgumentsHandler.GetArgument<int?>(context);
+        if (entryId is null) return await next.Invoke(context);
 
-        ITodoService service;
+        ITodoService? service;
+        var serviceType = ContextArgumentsHandler.GetRequestedEntryServiceType(context);
 
         try
         {
-            service = ContextArgumentsHandler.GetService(context);
+            service = (ITodoService?)ContextArgumentsHandler.GetArgument(context, serviceType);
         }
         catch (Exception e)
         {
             return Results.Problem(e.Message);
         }
 
-        if (!service.EntryExists(entryId))
-        {
+        if (!service!.EntryExists((int)entryId))
             return Results.NotFound($"There isn't any {GetEntryName()} with id '{entryId}'.");
-        }
 
         return await next.Invoke(context);
     }

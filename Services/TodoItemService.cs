@@ -12,13 +12,6 @@ public class TodoItemService(TodoContext context) : ITodoService
         return todoItem is not null;
     }
 
-    public bool UserHasEntry(int id, int userId)
-    {
-        var todoItem = context.TodoItems.Find(id);
-        Console.WriteLine(todoItem);
-        return context.TodoLists.Find(todoItem.TodoListId)!.UserId == userId;
-    }
-
     public TodoItem GetById(int id)
     {
         return context.TodoItems.Find(id)!;

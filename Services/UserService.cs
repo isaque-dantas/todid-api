@@ -11,10 +11,17 @@ public class UserService(TodoContext context) : ITodoService
         var user = context.Users.Find(id);
         return user is not null;
     }
-    
-    public bool UserHasEntry(int id, int userId)
+
+    public bool UserHasEntry(int id, int entryId, Type entryType)
     {
-        throw new NotImplementedException();
+        var entryTypeToTodoListId = new Dictionary<Type, int>
+        {
+            {typeof(TodoItem), context.TodoItems.Find(entryId)!.TodoListId},
+            {typeof(TodoList), entryId}
+        };
+        
+        var todoListId = entryTypeToTodoListId[entryType];
+        return context.TodoLists.Find(todoListId)!.UserId == id;
     }
 
     public bool AreEmailAndPasswordValid(string email, string password)

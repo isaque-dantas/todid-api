@@ -9,19 +9,19 @@ public class UserClaimValidator : IEndpointFilter
 {
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
-        UserService service;
+        UserService? service;
         
         try
         {
-            service = (UserService)ContextArgumentsHandler.GetService(context, typeof(UserService));
+            service = ContextArgumentsHandler.GetArgument<UserService>(context);
         }
         catch (Exception e)
         {
             return Results.Problem(e.Message);
         }
 
-        var userClaim = ContextArgumentsHandler.GetUserClaimFromContext(context);
-        var user = service.ClaimToUser(userClaim);
+        var userClaim = ContextArgumentsHandler.GetArgument<ClaimsPrincipal>(context);
+        var user = service!.ClaimToUser(userClaim);
 
         if (user is null)
             return Results.NotFound("User with given Id was not found.");

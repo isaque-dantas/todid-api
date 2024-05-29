@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using TodoAPI.Models;
 using TodoAPI.Services;
 
@@ -7,43 +8,32 @@ public class TodoItemForeignKeyValidator : IEndpointFilter
 {
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
-        UserService userService;
-        TodoListService todoListService;
+        UserService? userService;
+        TodoListService? todoListService;
 
         try
         {
-            userService = (UserService)ContextArgumentsHandler.GetService(context, typeof(UserService));
-            todoListService = (TodoListService)ContextArgumentsHandler.GetService(context, typeof(TodoListService));
+            userService = ContextArgumentsHandler.GetArgument<UserService>(context);
+            todoListService = ContextArgumentsHandler.GetArgument<TodoListService>(context);
         }
         catch (Exception e)
         {
             return Results.Problem(e.Message);
         }
 
-        var todoItemDto = GetTodoItemDtoFromContext(context);
+        var todoItemDto = ContextArgumentsHandler.GetArgument<TodoItemDto>(context);
 
         if (todoItemDto is null) return await next(context);
 
-        if (!todoListService.EntryExists(todoItemDto.TodoListId))
+        if (!todoListService!.EntryExists(todoItemDto.TodoListId))
             return Results.NotFound($"There isn't a TodoList with id '{todoItemDto.TodoListId}'");
 
-        var userClaim = ContextArgumentsHandler.GetUserClaimFromContext(context);
-        var user = userService.ClaimToUser(userClaim)!;
+        var userClaim = ContextArgumentsHandler.GetArgument<ClaimsPrincipal>(context);
+        var user = userService!.ClaimToUser(userClaim)!;
         
-        if (!todoListService.UserHasEntry(todoItemDto.TodoListId, user.Id))
+        if (!userService.UserHasEntry(user.Id, todoItemDto.TodoListId, typeof(TodoItem)))
             return Results.Forbid();
 
         return await next(context);
-    }
-
-    private static TodoItemDto? GetTodoItemDtoFromContext(EndpointFilterInvocationContext context)
-    {
-        foreach (var contextArgument in context.Arguments)
-        {
-            if (contextArgument is TodoItemDto dto)
-                return dto;
-        }
-
-        return null;
     }
 }

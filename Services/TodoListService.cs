@@ -12,11 +12,6 @@ public class TodoListService(TodoContext context) : ITodoService
         var todoList = context.TodoLists.Find(id);
         return todoList is not null;
     }
-
-    public bool UserHasEntry(int id, int userId)
-    {
-        return context.TodoLists.Find(id)!.UserId == userId;
-    }
     
     public IEnumerable<TodoList> GetAll(int userId)
     {
@@ -52,12 +47,6 @@ public class TodoListService(TodoContext context) : ITodoService
         var todoList = GetById(id);
         todoList.Name = inputTodoList.Name;
         todoList.Color = inputTodoList.Color;
-
-        Console.WriteLine();
-        Console.WriteLine(inputTodoList.TodoItems);
-        Console.WriteLine(inputTodoList.TodoItems!.Count);
-        Console.WriteLine();
-
         if (inputTodoList.TodoItems!.Count > 0)
         {
             context.RemoveRange(GetItems(todoList.Id));

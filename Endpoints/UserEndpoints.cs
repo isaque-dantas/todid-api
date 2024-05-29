@@ -26,31 +26,31 @@ public static class UserEndpoints
 
         users.MapPost("/login", Login)
             .AddEndpointFilter<UserCredentialsValidator>();
-        
+
         users.MapPut("", Update)
             .RequireAuthorization()
             .AddEndpointFilter<UserClaimValidator>()
             .AddEndpointFilter<UserUniqueAttributesValidator>();
     }
 
-    private static IResult Login([FromBody] UserLoginRequest userLoginRequest, [FromServices] UserService service)
+    public static IResult Login([FromBody] UserLoginRequest userLoginRequest, [FromServices] UserService service)
     {
         var user = service.GetByEmail(userLoginRequest.Email)!;
         return Results.Ok(JwtBearerService.GenerateToken(user));
     }
 
-    private static IResult Get([FromServices] UserService service, ClaimsPrincipal userClaim)
+    public static IResult Get([FromServices] UserService service, ClaimsPrincipal userClaim)
     {
         return Results.Ok(service.ClaimToUser(userClaim));
     }
 
-    private static IResult Register([FromServices] UserService service, UserDto userDto)
+    public static IResult Register([FromServices] UserService service, UserDto userDto)
     {
         var registeredUser = service.Register(userDto.ToUser());
         return Results.Created($"/{registeredUser.Id}", registeredUser);
     }
 
-    private static IResult Update([FromServices] UserService service, ClaimsPrincipal userClaim, UserDto userDto)
+    public static IResult Update([FromServices] UserService service, ClaimsPrincipal userClaim, UserDto userDto)
     {
         var user = service.ClaimToUser(userClaim)!;
         service.Update(userDto.ToUser(), user.Id);
@@ -58,3 +58,4 @@ public static class UserEndpoints
         return Results.NoContent();
     }
 }
+
