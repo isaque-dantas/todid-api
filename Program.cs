@@ -1,16 +1,33 @@
 using System.Text;
-using TodoAPI;
-using TodoAPI.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using TodoAPI;
 using TodoAPI.Authentication;
+using TodoAPI.Endpoints;
 using TodoAPI.Models;
 using TodoAPI.Requests;
-using TodoAPI.Endpoints;
+using TodoAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSqlite<TodoContext>("Data Source=TodoDb.db");
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Listen(System.Net.IPAddress.Parse("10.0.0.112"), 8000);
+});
+
+const string corsPolicy = "corsPolicy";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(corsPolicy, policy  =>
+    {
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
+builder.Services.AddDbContext<TodoContext>();
 
 builder.AddFluentValidationEndpointFilter();
 builder.Services.AddScoped<IValidator<UpdateTodoListRequest>, UpdateTodoListRequest.Validator>();
@@ -30,7 +47,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes(AppSettingsService.JwtSettings.Key)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppSettingsService.JwtSettings.Key)),
             ValidateIssuer = false,
             ValidateAudience = false
         };
@@ -41,6 +58,7 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+app.UseCors(corsPolicy);
 app.UseAuthentication();
 app.UseAuthorization();
 

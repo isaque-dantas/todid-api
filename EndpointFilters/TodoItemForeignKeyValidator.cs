@@ -30,8 +30,8 @@ public class TodoItemForeignKeyValidator : IEndpointFilter
 
         var userClaim = ContextArgumentsHandler.GetArgument<ClaimsPrincipal>(context);
         var user = userService!.ClaimToUser(userClaim)!;
-        
-        if (!userService.UserHasEntry(user.Id, todoItemDto.TodoListId, typeof(TodoItem)))
+
+        if (!userService.UserHasEntry(user.Id, todoItemDto.TodoListId, typeof(TodoList)))
             return Results.Forbid();
 
         return await next(context);

@@ -4,39 +4,71 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-      <UserSecretsId>45be8f0b-206d-419a-b2ac-5afb12a7acc4</UserSecretsId>
-  </PropertyGroup>
+        <UserSecretsId>45be8f0b-206d-419a-b2ac-5afb12a7acc4</UserSecretsId>
+    </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="FluentValidation" Version="11.9.1" />
         <PackageReference Include="ForEvolve.FluentValidation.AspNetCore.Http" Version="1.0.26" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.5" />
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.5" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.5">
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-          <PrivateAssets>all</PrivateAssets>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.5" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.6" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="Filters\**" />
+        <Compile Remove="Filters\**" />
+        <Compile Remove="Migrations\20240531235709_ChangeToMySql.cs" />
+        <Compile Remove="Migrations\20240531235709_ChangeToMySql.Designer.cs" />
+        <Compile Remove="Migrations\20240531235903_ChangeToMySql2.cs" />
+        <Compile Remove="Migrations\20240531235903_ChangeToMySql2.Designer.cs" />
+        <Compile Remove="Migrations\20240531235942_ChangeToMySql3.cs" />
+        <Compile Remove="Migrations\20240531235942_ChangeToMySql3.Designer.cs" />
+        <Compile Remove="Migrations\20240601000233_ChangeToMySql4.cs" />
+        <Compile Remove="Migrations\20240601000233_ChangeToMySql4.Designer.cs" />
+        <Compile Remove="Migrations\20240601001108_ChangeToMySql5.cs" />
+        <Compile Remove="Migrations\20240601001108_ChangeToMySql5.Designer.cs" />
+        <Compile Remove="Migrations\20240601001731_ChangeToMySql6.cs" />
+        <Compile Remove="Migrations\20240601001731_ChangeToMySql6.Designer.cs" />
+        <Compile Remove="Migrations\20240601002044_ChangeToMySql7.cs" />
+        <Compile Remove="Migrations\20240601002044_ChangeToMySql7.Designer.cs" />
+        <Compile Remove="Migrations\20240601002135_ChangeToMySql8.cs" />
+        <Compile Remove="Migrations\20240601002135_ChangeToMySql8.Designer.cs" />
+        <Compile Remove="Migrations\20240601002317_ChangeToMySql9.cs" />
+        <Compile Remove="Migrations\20240601002317_ChangeToMySql9.Designer.cs" />
+        <Compile Remove="Migrations\20240601002610_ChangeToMySql10.cs" />
+        <Compile Remove="Migrations\20240601002610_ChangeToMySql10.Designer.cs" />
+        <Compile Remove="Migrations\20240601002706_ChangeToMySql11.cs" />
+        <Compile Remove="Migrations\20240601002706_ChangeToMySql11.Designer.cs" />
+        <Compile Remove="Migrations\20240601003404_ChangeToMySql12.cs" />
+        <Compile Remove="Migrations\20240601003404_ChangeToMySql12.Designer.cs" />
+        <Compile Remove="Migrations\20240601003833_ChangeToMySql13.cs" />
+        <Compile Remove="Migrations\20240601003833_ChangeToMySql13.Designer.cs" />
+        <Compile Remove="Migrations\20240601003901_ChangeToMySql14.cs" />
+        <Compile Remove="Migrations\20240601003901_ChangeToMySql14.Designer.cs" />
+        <Compile Remove="Migrations\TodoDbModelSnapshot.cs" />
+        <Compile Remove="Migrations\20240527185222_UpdateUserAttributesConstraints.cs" />
+        <Compile Remove="Migrations\20240527185222_UpdateUserAttributesConstraints.Designer.cs" />
+        <Compile Remove="Migrations\20240610195019_NewMigDDD840923.cs" />
+        <Compile Remove="Migrations\20240610195019_NewMigDDD840923.Designer.cs" />
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Remove="Filters\**" />
+        <EmbeddedResource Remove="Filters\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Remove="Filters\**" />
+        <Content Remove="Filters\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Filters\**" />
+        <None Remove="Filters\**" />
     </ItemGroup>
 
 </Project>

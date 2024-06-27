@@ -9,7 +9,7 @@ public static class ContextArgumentsHandler
     {
         return (T?)context.Arguments.SingleOrDefault(argument => argument is T);
     }
-    
+
     public static object? GetArgument(EndpointFilterInvocationContext context, Type argumentType)
     {
         return context.Arguments.SingleOrDefault(argument => argument?.GetType() == argumentType);

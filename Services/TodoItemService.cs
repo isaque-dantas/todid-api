@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TodoAPI.Models;
 using TodoList = TodoAPI.Models.TodoList;
 using TodoItem = TodoAPI.Models.TodoItem;
 
@@ -17,22 +18,28 @@ public class TodoItemService(TodoContext context) : ITodoService
         return context.TodoItems.Find(id)!;
     }
 
-    public IEnumerable<TodoItem> GetAll(int userId)
+    public TodoItemDto GetDtoById(int id)
+    {
+        return context.TodoItems.Find(id)!.ToTodoItemDto();
+    }
+
+    public IEnumerable<TodoItemDto> GetAll(int userId)
     {
         return context.TodoItems
             .AsNoTracking()
             .Where(item => item.TodoList.UserId == userId)
+            .Select(item => item.ToTodoItemDto())
             .ToList();
     }
 
-    public TodoItem Create(TodoItem newTodoItem, TodoList todoList)
+    public TodoItemDto Create(TodoItem newTodoItem, TodoList todoList)
     {
         newTodoItem.TodoList = todoList;
 
         context.TodoItems.Add(newTodoItem);
         context.SaveChanges();
 
-        return newTodoItem;
+        return newTodoItem.ToTodoItemDto();
     }
 
     public void Update(int id, TodoItem inputTodoItem, TodoList todoList)

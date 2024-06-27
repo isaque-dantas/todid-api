@@ -2,14 +2,15 @@ using FluentValidation;
 
 namespace TodoAPI.Models;
 
-public class TodoListDto
+public class TodoListDto : ITodoEntry
 {
-    public string? Name { get; set; }
     public string? Color { get; set; }
     public List<TodoItemDto>? TodoItems { get; set; }
     public int UserId { get; set; }
     public User User { get; set; }
-    
+    public int Id { get; set; }
+    public string? Name { get; set; }
+
     public TodoList ToTodoList()
     {
         var todoItems = new List<TodoItem>();
@@ -35,4 +36,3 @@ public class TodoListDto
         }
     }
 }
-

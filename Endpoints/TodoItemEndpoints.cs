@@ -58,6 +58,14 @@ public static class TodoItemEndpoints
         var todoList = todoListService.GetById(todoItemRequest.TodoListId);
         var todoItem = todoItemService.Create(todoItemRequest.ToTodoItem(), todoList);
 
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine($"*************** '{todoItem.Name}' ***************");
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+
         return Results.Created($"/items/{todoItem.Id}", todoItem);
     }
 

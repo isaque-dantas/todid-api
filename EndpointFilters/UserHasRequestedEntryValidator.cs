@@ -26,7 +26,7 @@ public class UserHasRequestedEntryValidator : IEndpointFilter
         var entryId = ContextArgumentsHandler.GetArgument<int>(context);
 
         var entryType = ContextArgumentsHandler.GetRequestedEntryType(context);
-        
+
         if (!userService.UserHasEntry(user.Id, entryId, entryType))
             return Results.Forbid();
 

@@ -31,6 +31,10 @@ public static class UserEndpoints
             .RequireAuthorization()
             .AddEndpointFilter<UserClaimValidator>()
             .AddEndpointFilter<UserUniqueAttributesValidator>();
+
+        users.MapDelete("", Delete)
+            .RequireAuthorization()
+            .AddEndpointFilter<UserClaimValidator>();
     }
 
     public static IResult Login([FromBody] UserLoginRequest userLoginRequest, [FromServices] UserService service)
@@ -47,7 +51,9 @@ public static class UserEndpoints
     public static IResult Register([FromServices] UserService service, UserDto userDto)
     {
         var registeredUser = service.Register(userDto.ToUser());
-        return Results.Created($"/{registeredUser.Id}", registeredUser);
+
+        var registeredUserDto = registeredUser.ToUserDto();
+        return Results.Created($"/{registeredUser.Id}", registeredUserDto);
     }
 
     public static IResult Update([FromServices] UserService service, ClaimsPrincipal userClaim, UserDto userDto)
@@ -57,5 +63,12 @@ public static class UserEndpoints
 
         return Results.NoContent();
     }
-}
 
+    public static IResult Delete([FromServices] UserService service, ClaimsPrincipal userClaim)
+    {
+        var user = service.ClaimToUser(userClaim)!;
+        service.DeleteById(user.Id);
+
+        return Results.NoContent();
+    }
+}

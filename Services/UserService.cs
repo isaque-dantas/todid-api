@@ -14,13 +14,15 @@ public class UserService(TodoContext context) : ITodoService
 
     public bool UserHasEntry(int id, int entryId, Type entryType)
     {
-        var entryTypeToTodoListId = new Dictionary<Type, int>
-        {
-            {typeof(TodoItem), context.TodoItems.Find(entryId)!.TodoListId},
-            {typeof(TodoList), entryId}
-        };
-        
-        var todoListId = entryTypeToTodoListId[entryType];
+        int todoListId;
+
+        if (entryType == typeof(TodoItem))
+            todoListId = context.TodoItems.Find(entryId)!.TodoListId;
+        else if (entryType == typeof(TodoList))
+            todoListId = entryId;
+        else
+            return false;
+
         return context.TodoLists.Find(todoListId)!.UserId == id;
     }
 
@@ -74,6 +76,13 @@ public class UserService(TodoContext context) : ITodoService
         user.Email = updatedUser.Email;
         user.TodoLists = updatedUser.TodoLists;
 
+        context.SaveChanges();
+    }
+
+    public void DeleteById(int id)
+    {
+        var user = context.Users.Find(id)!;
+        context.Users.Remove(user);
         context.SaveChanges();
     }
 }

@@ -97,7 +97,7 @@ Content-Type: application/json
 {
   "Name": "Isaque",
   "Username": "isaque-d",
-  "Email": "itas@gmail.com",
+  "Email": "id@gmail.com",
   "Password": "12345678",
   "Role": "admin"
 }

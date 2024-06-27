@@ -1,4 +1,3 @@
-using TodoAPI.Models;
 using TodoAPI.Requests;
 using TodoAPI.Services;
 
@@ -9,7 +8,7 @@ public class UserCredentialsValidator : IEndpointFilter
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
         UserService? service;
-        
+
         try
         {
             service = ContextArgumentsHandler.GetArgument<UserService>(context);
@@ -25,10 +24,10 @@ public class UserCredentialsValidator : IEndpointFilter
 
         if (service!.GetByEmail(request.Email) is null)
             return Results.NotFound($"There isn't any user with email '{request.Email}'");
-        
+
         if (!service.AreEmailAndPasswordValid(request.Email, request.Password))
             return Results.Unauthorized();
-        
+
         return await next(context);
     }
 }

@@ -22,8 +22,7 @@ public static class TodoListEndpoints
 
         lists.MapGet("/{id:int}/items", GetItemsFromList);
 
-        lists.MapGet("", GetAll)
-            .RequireAuthorization();
+        lists.MapGet("", GetAll);
 
         lists.MapPost("", Create);
 
@@ -60,7 +59,7 @@ public static class TodoListEndpoints
     {
         var user = userService.ClaimToUser(userClaim)!;
         todoListDto.UserId = user.Id;
-        
+
         var todoList = todoListService.Create(todoListDto.ToTodoList());
         return Results.Created($"/lists/{todoList.Id}", todoList);
     }
@@ -71,7 +70,7 @@ public static class TodoListEndpoints
     {
         var user = userService.ClaimToUser(userClaim)!;
         todoListRequest.UserId = user.Id;
-        
+
         todoListService.Update(id, todoListRequest.ToTodoList());
         return Results.NoContent();
     }
@@ -94,7 +93,7 @@ public static class TodoListEndpoints
         [FromServices] UserService userService, ClaimsPrincipal userClaim)
     {
         var user = userService.ClaimToUser(userClaim)!;
-        
+
         todoListService.DeleteAll(user.Id);
         return Results.NoContent();
     }

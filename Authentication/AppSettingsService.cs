@@ -2,8 +2,6 @@ namespace TodoAPI.Authentication;
 
 public static class AppSettingsService
 {
-    public static JwtSettings JwtSettings { get; }
-
     static AppSettingsService()
     {
         var configuration = new ConfigurationBuilder()
@@ -12,5 +10,10 @@ public static class AppSettingsService
             .Build();
 
         JwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>() ?? new JwtSettings();
+        ConnectionString =
+            configuration.GetSection("ConnectionStrings").GetSection("DefaultConnection").Get<string>() ?? "";
     }
+
+    public static JwtSettings JwtSettings { get; }
+    public static string ConnectionString { get; }
 }

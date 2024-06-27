@@ -2,22 +2,23 @@ using FluentValidation;
 
 namespace TodoAPI.Models;
 
-public class TodoItemDto
+public class TodoItemDto : ITodoEntry
 {
-    public string Name { get; set; }
     public bool IsComplete { get; set; }
     public int TodoListId { get; set; }
-    
+    public int Id { get; set; }
+    public string Name { get; set; }
+
     public TodoItem ToTodoItem()
     {
         return new TodoItem
         {
-            Name=Name,
+            Name = Name,
             IsComplete = IsComplete,
             TodoListId = TodoListId
         };
     }
-    
+
     public class Validator : AbstractValidator<TodoItemDto>
     {
         public Validator()
@@ -28,4 +29,3 @@ public class TodoItemDto
         }
     }
 }
-

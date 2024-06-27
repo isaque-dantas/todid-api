@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TodoAPI.Models;
 using TodoList = TodoAPI.Models.TodoList;
 using TodoItem = TodoAPI.Models.TodoItem;
 
@@ -12,18 +13,20 @@ public class TodoListService(TodoContext context) : ITodoService
         var todoList = context.TodoLists.Find(id);
         return todoList is not null;
     }
-    
-    public IEnumerable<TodoList> GetAll(int userId)
+
+    public IEnumerable<TodoListDto> GetAll(int userId)
     {
         return context.TodoLists
             .AsNoTracking()
+            .Include(list => list.TodoItems)
             .Where(list => list.UserId == userId)
+            .Select(list => list.ToTodoListDto())
             .ToList();
     }
 
     public TodoList GetById(int id)
     {
-        return context.TodoLists.Find(id)!;
+        return context.TodoLists.Include(list => list.TodoItems).Single(list => list.Id == id);
     }
 
     public List<TodoItem> GetItems(int id)
@@ -33,13 +36,13 @@ public class TodoListService(TodoContext context) : ITodoService
         return items;
     }
 
-    public TodoList Create(TodoList newTodoList)
+    public TodoListDto Create(TodoList newTodoList)
     {
         newTodoList.User = context.Users.Find(newTodoList.UserId)!;
         context.TodoLists.Add(newTodoList);
         context.SaveChanges();
 
-        return newTodoList;
+        return newTodoList.ToTodoListDto();
     }
 
     public void Update(int id, TodoList inputTodoList)
@@ -71,6 +74,7 @@ public class TodoListService(TodoContext context) : ITodoService
     public void DeleteById(int id)
     {
         context.TodoLists.Remove(GetById(id));
+        context.TodoItems.RemoveRange(GetItems(id));
         context.SaveChanges();
     }
 
@@ -82,9 +86,11 @@ public class TodoListService(TodoContext context) : ITodoService
 
     public void DeleteAll(int userId)
     {
-        context.TodoLists.RemoveRange(
-            context.TodoLists.Where(list => list.UserId == userId)
-        );
+        var todoLists = context.TodoLists.Where(list => list.UserId == userId);
+        todoLists.ToList().ForEach(list => { context.TodoItems.RemoveRange(GetItems(list.Id)); });
+
+        context.TodoLists.RemoveRange(todoLists);
+
         context.SaveChanges();
     }
 }

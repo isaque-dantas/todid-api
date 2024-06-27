@@ -1,7 +1,7 @@
-namespace TodoAPI.Requests;
-
 using FluentValidation;
-using Models;
+using TodoAPI.Models;
+
+namespace TodoAPI.Requests;
 
 public class UpdateTodoListRequest : TodoListDto
 {
@@ -11,7 +11,7 @@ public class UpdateTodoListRequest : TodoListDto
         {
             RuleFor(x => x.Name).NotNull().Length(2, 64);
             RuleFor(x => x.Color).NotNull().Length(6);
-            RuleForEach(x => x.TodoItems).SetValidator(new UpdateTodoItemRequest.Validator());
+            RuleForEach(x => x.TodoItems).SetValidator(new TodoItemDto.Validator());
         }
     }
 

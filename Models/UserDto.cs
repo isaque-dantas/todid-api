@@ -21,15 +21,14 @@ public class UserDto
         [
             new UniqueAttribute<string>
             (
-                name: "Email", serviceSearcherMethod:
-                service.GetByEmail!,
-                value: userDto.Email
+                "Email", service.GetByEmail!,
+                userDto.Email
             ),
             new UniqueAttribute<string>
             (
-                name: "Username",
-                serviceSearcherMethod: service.GetByUsername!,
-                value: userDto.Username
+                "Username",
+                service.GetByUsername!,
+                userDto.Username
             )
         ];
     }
@@ -41,8 +40,7 @@ public class UserDto
             Name = Name,
             Username = Username,
             Email = Email,
-            Password = Password,
-            Role = Role
+            Password = Password
         };
     }
 
@@ -54,8 +52,6 @@ public class UserDto
             RuleFor(x => x.Username).Length(2, 32).NotNull();
             RuleFor(x => x.Email).EmailAddress().MaximumLength(64).NotNull();
             RuleFor(x => x.Password).Length(8, 64).NotNull();
-            RuleFor(x => x.Role)
-                .Must(role => role is "admin" or "commom").WithMessage("Should be 'admin' or 'commom'").NotNull();
         }
     }
 }
